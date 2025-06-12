@@ -14,13 +14,13 @@ app_name = UsersConfig.name
 urlpatterns = [
     path("profiles/", ProfileListCreateView.as_view(), name="profile-list"),
     path(
-        "profiles/<int:pk>",
+        "profiles/<int:pk>/",
         ProfileRetrieveUpdateDestroyView.as_view(),
         name="profile-detail",
     ),
     path("payments/", PaymentListCreateView.as_view(), name="payment-list"),
     path(
-        "payments/<int:pk>",
+        "payments/<int:pk>/",
         PaymentRetrieveUpdateDestroyView.as_view(),
         name="payment-detail",
     ),
