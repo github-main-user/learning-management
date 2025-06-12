@@ -23,8 +23,8 @@ class User(AbstractUser):
 
 class Payment(models.Model):
     class PaymentMethod(models.TextChoices):
-        CASH = "CASH", "Cash"
-        TRANSFER = "TRANSFER", "Transfer"
+        CASH = "cash", "Cash"
+        TRANSFER = "transfer", "Transfer"
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="payments")
     timestamp = models.DateTimeField(auto_now_add=True)
