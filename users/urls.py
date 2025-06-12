@@ -1,11 +1,16 @@
-from rest_framework.routers import DefaultRouter
+from django.urls import path
 
 from .apps import UsersConfig
-from .views import ProfileViewSet
+from .views import ProfileListCreateView, ProfileRetrieveUpdateDestroyView
 
 app_name = UsersConfig.name
 
-profile_router = DefaultRouter()
-profile_router.register("profiles", ProfileViewSet, "profile")
 
-urlpatterns = profile_router.urls
+urlpatterns = [
+    path("profiles/", ProfileListCreateView.as_view(), name="profile-list"),
+    path(
+        "profiles/<int:pk>",
+        ProfileRetrieveUpdateDestroyView.as_view(),
+        name="profile-detail",
+    ),
+]
