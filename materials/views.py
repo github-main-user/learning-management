@@ -6,7 +6,7 @@ from .serializers import CourseSerializer, LessonSerializer
 # COURSE
 
 
-class CourseViewSet(viewsets.ModelViewSet):
+class CourseViewAPISet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
@@ -14,11 +14,11 @@ class CourseViewSet(viewsets.ModelViewSet):
 # LESSON
 
 
-class LessonListCreateView(generics.ListCreateAPIView):
+class LessonListCreateAPIView(generics.ListCreateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
 
 
-class LessonRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+class LessonRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer

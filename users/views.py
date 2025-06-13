@@ -12,7 +12,7 @@ from .serializers import PaymentSerializer, UserSerializer
 User = get_user_model()
 
 
-class UserCreateView(generics.CreateAPIView):
+class UserCreateAPIView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
@@ -24,17 +24,17 @@ class UserCreateView(generics.CreateAPIView):
         user.save()
 
 
-class UserListView(generics.ListAPIView):
+class UserListAPIView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
-class UserRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+class UserRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
-class PaymentListCreateView(generics.ListCreateAPIView):
+class PaymentListCreateAPIView(generics.ListCreateAPIView):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
 

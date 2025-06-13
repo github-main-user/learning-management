@@ -1,22 +1,22 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-from materials.views import CourseViewSet
+from materials.views import CourseViewAPISet
 
 from .apps import MaterialsConfig
-from .views import LessonListCreateView, LessonRetrieveUpdateDestroyView
+from .views import LessonListCreateAPIView, LessonRetrieveUpdateDestroyAPIView
 
 app_name = MaterialsConfig.name
 
 courses_router = DefaultRouter()
-courses_router.register(r"courses", CourseViewSet, basename="course")
+courses_router.register(r"courses", CourseViewAPISet, basename="course")
 
 urlpatterns = [
     *courses_router.urls,
-    path("lessons/", LessonListCreateView.as_view(), name="lessons-list-create"),
+    path("lessons/", LessonListCreateAPIView.as_view(), name="lessons-list-create"),
     path(
         "lessons/<int:pk>/",
-        LessonRetrieveUpdateDestroyView.as_view(),
+        LessonRetrieveUpdateDestroyAPIView.as_view(),
         name="lesson-detail",
     ),
 ]
