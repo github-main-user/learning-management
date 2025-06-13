@@ -1,3 +1,5 @@
+from typing import override
+
 from django.contrib.auth import get_user_model
 from rest_framework.serializers import ModelSerializer
 
@@ -13,7 +15,18 @@ class PaymentSerializer(ModelSerializer):
         read_only_fields = ["timestamp"]
 
 
-class UserSerializer(ModelSerializer):
+class UserCreateSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["email", "password"]
+        extra_kwargs = {"password": {"write_only": True}}
+
+    @override
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)
+
+
+class UserDetailSerializer(ModelSerializer):
     payments = PaymentSerializer(many=True, read_only=True)
 
     class Meta:
