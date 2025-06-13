@@ -1,4 +1,5 @@
 from django.urls import path
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .apps import UsersConfig
 from .views import (
@@ -12,6 +13,8 @@ app_name = UsersConfig.name
 
 
 urlpatterns = [
+    path("login/", TokenObtainPairView.as_view(), name="login"),
+    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("profiles/", ProfileListCreateView.as_view(), name="profile-list"),
     path(
         "profiles/<int:pk>/",
