@@ -3,6 +3,8 @@ from django.db import models
 
 from materials.models import Course, Lesson
 
+from .managers import UserManager
+
 
 class User(AbstractUser):
     username = None
@@ -13,6 +15,8 @@ class User(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+
+    objects = UserManager()
 
     class Meta:
         ordering = ["email"]
