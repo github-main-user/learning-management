@@ -18,7 +18,7 @@ class PaymentSerializer(ModelSerializer):
 class UserCreateSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ["email", "password"]
+        fields = ["id", "email", "password"]
         extra_kwargs = {"password": {"write_only": True}}
 
     @override
@@ -26,7 +26,7 @@ class UserCreateSerializer(ModelSerializer):
         return User.objects.create_user(**validated_data)
 
 
-class UserDetailSerializer(ModelSerializer):
+class UserPrivateSerializer(ModelSerializer):
     payments = PaymentSerializer(many=True, read_only=True)
 
     class Meta:
@@ -41,3 +41,9 @@ class UserDetailSerializer(ModelSerializer):
             "avatar",
             "payments",
         ]
+
+
+class UserPublicSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "email", "first_name", "phone", "city", "avatar"]
