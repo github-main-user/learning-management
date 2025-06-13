@@ -5,20 +5,22 @@ from .apps import UsersConfig
 from .views import (
     PaymentListCreateView,
     PaymentRetrieveUpdateDestroyView,
-    ProfileListCreateView,
-    ProfileRetrieveUpdateDestroyView,
+    UserCreateView,
+    UserListView,
+    UserRetrieveUpdateDestroyView,
 )
 
 app_name = UsersConfig.name
 
 
 urlpatterns = [
+    path("register/", UserCreateView.as_view(), name="register"),
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("profiles/", ProfileListCreateView.as_view(), name="profile-list"),
+    path("profiles/", UserListView.as_view(), name="profile-list"),
     path(
         "profiles/<int:pk>/",
-        ProfileRetrieveUpdateDestroyView.as_view(),
+        UserRetrieveUpdateDestroyView.as_view(),
         name="profile-detail",
     ),
     path("payments/", PaymentListCreateView.as_view(), name="payment-list"),

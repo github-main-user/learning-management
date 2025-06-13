@@ -13,7 +13,7 @@ class PaymentSerializer(ModelSerializer):
         read_only_fields = ["timestamp"]
 
 
-class ProfileSerializer(ModelSerializer):
+class UserSerializer(ModelSerializer):
     payments = PaymentSerializer(many=True, read_only=True)
 
     class Meta:
