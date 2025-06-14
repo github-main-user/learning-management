@@ -24,6 +24,10 @@ class CourseViewAPISet(viewsets.ModelViewSet):
 
         return [permission() for permission in permission_classes]
 
+    @override
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
 
 class LessonListCreateAPIView(generics.ListCreateAPIView):
     queryset = Lesson.objects.all()
@@ -38,6 +42,10 @@ class LessonListCreateAPIView(generics.ListCreateAPIView):
             permission_classes = [~IsModerator, IsOwner]
 
         return [permission() for permission in permission_classes]
+
+    @override
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 
 class LessonRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
