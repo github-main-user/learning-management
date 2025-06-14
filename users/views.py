@@ -7,6 +7,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import AllowAny
 
 from .models import Payment
+from .permissions import IsSelfOrReadOnly
 from .serializers import (
     PaymentSerializer,
     UserCreateSerializer,
@@ -25,6 +26,7 @@ class UserCreateAPIView(generics.CreateAPIView):
 
 class UserRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
+    permission_classes = [IsSelfOrReadOnly]
 
     @override
     def get_serializer_class(self):
