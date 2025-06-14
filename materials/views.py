@@ -13,13 +13,18 @@ class CourseViewAPISet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
 
     @override
+    def get_queryset(self):
+        user = self.request.user
+        if user.groups.filter(name="moderators").exists():
+            return Course.objects.all()
+        return Course.objects.filter(owner=user)
+
+    @override
     def get_permissions(self):
         permission_classes = []
         if self.action in ["create", "destroy"]:
             permission_classes = [~IsModerator, IsOwner]
-        elif self.action == "list":
-            permission_classes = [IsModerator]
-        elif self.action in ["retrieve", "update", "partial_update"]:
+        elif self.action in ["retrieve", "update", "partial_update", "list"]:
             permission_classes = [IsModerator | IsOwner]
 
         return [permission() for permission in permission_classes]
@@ -34,10 +39,17 @@ class LessonListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = LessonSerializer
 
     @override
+    def get_queryset(self):
+        user = self.request.user
+        if user.groups.filter(name="moderators").exists():
+            return Lesson.objects.all()
+        return Lesson.objects.filter(owner=user)
+
+    @override
     def get_permissions(self):
         permission_classes = []
         if self.request.method == "GET":
-            permission_classes = [IsModerator]
+            permission_classes = [IsModerator | IsOwner]
         elif self.request.method == "POST":
             permission_classes = [~IsModerator, IsOwner]
 
