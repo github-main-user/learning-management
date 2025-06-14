@@ -6,7 +6,7 @@ from materials.models import Course, Lesson
 
 
 class Command(BaseCommand):
-    help = "Creates the 'Moderator' group with specific permissions"
+    help = "Creates the 'moderators' group with specific permissions"
 
     def handle(self, *args, **options):
         group_name = "moderators"
