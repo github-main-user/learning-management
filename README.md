@@ -29,5 +29,10 @@ cp .env.example .env
 # then open in your editor end setup
 ```
 
+4. Start the project.
+```
+./manage.py runserver
+```
+
 - The application will be available on `http://localhost:8000/`
 - Admin Panel on `http://localhost:8000/admin/`
