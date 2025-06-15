@@ -9,6 +9,16 @@ from .serializers import CourseSerializer, LessonSerializer
 
 
 class CourseViewAPISet(viewsets.ModelViewSet):
+    """
+    ViewSet for Course model.
+
+    Returns all courses if user is a moderator, otherwise returns only its courses.
+    Moderators can't create/delete courses.
+    Other methods are allowed only if user is owner or a moderator.
+
+    Created courses linked to request.user automatically.
+    """
+
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
@@ -35,6 +45,15 @@ class CourseViewAPISet(viewsets.ModelViewSet):
 
 
 class LessonListCreateAPIView(generics.ListCreateAPIView):
+    """
+    List/Create View for Lesson model.
+
+    Returns all lessons if user is a moderator, otherwise returns only its lessons.
+    Created lessons linked to request.user automatically.
+
+    Moderators can't create lessons.
+    """
+
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
 
@@ -61,6 +80,13 @@ class LessonListCreateAPIView(generics.ListCreateAPIView):
 
 
 class LessonRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve/Update/Destroy View for Lesson model.
+
+    Retrieve/Update methods are allowed only if user is owner or a moderator.
+    Moderators can't delete lessons.
+    """
+
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
 

@@ -19,12 +19,19 @@ User = get_user_model()
 
 
 class UserCreateAPIView(generics.CreateAPIView):
+    """Endpoint for user registration. Allows requests from unauthenticated users."""
+
     queryset = User.objects.all()
     serializer_class = UserCreateSerializer
     permission_classes = [AllowAny]
 
 
 class UserRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Returns private profile if user in request is owner.
+    Otherwise returns public profile (without last_name and payments).
+    """
+
     queryset = User.objects.all()
     permission_classes = [IsSelfOrReadOnly]
 
@@ -36,6 +43,11 @@ class UserRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class PaymentListCreateAPIView(generics.ListCreateAPIView):
+    """
+    Create/List Endpoint for Payment.
+    Allows ordering by "timestamp" and filtering by "course", "lesson" and "method".
+    """
+
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
 
@@ -45,5 +57,7 @@ class PaymentListCreateAPIView(generics.ListCreateAPIView):
 
 
 class PaymentRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    """Retrieve/Update/Destroy Endpoint for Payment."""
+
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer

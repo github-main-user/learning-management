@@ -7,6 +7,8 @@ from .managers import UserManager
 
 
 class User(AbstractUser):
+    """Custom User model with email instead of username by default."""
+
     username = None
     email = models.EmailField(unique=True)
     avatar = models.ImageField(upload_to="avatars/", null=True, blank=True)
