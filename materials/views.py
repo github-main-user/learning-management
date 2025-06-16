@@ -1,6 +1,7 @@
 from typing import override
 
 from rest_framework import generics, viewsets
+from rest_framework.permissions import IsAuthenticated
 
 from users.permissions import IsModerator, IsOwner
 
@@ -31,11 +32,11 @@ class CourseViewAPISet(viewsets.ModelViewSet):
 
     @override
     def get_permissions(self):
-        permission_classes = []
+        permission_classes = [IsAuthenticated]
         if self.action in ["create", "destroy"]:
-            permission_classes = [~IsModerator, IsOwner]
+            permission_classes += [~IsModerator, IsOwner]
         elif self.action in ["retrieve", "update", "partial_update", "list"]:
-            permission_classes = [IsModerator | IsOwner]
+            permission_classes += [IsModerator | IsOwner]
 
         return [permission() for permission in permission_classes]
 
@@ -66,11 +67,11 @@ class LessonListCreateAPIView(generics.ListCreateAPIView):
 
     @override
     def get_permissions(self):
-        permission_classes = []
+        permission_classes = [IsAuthenticated]
         if self.request.method == "GET":
-            permission_classes = [IsModerator | IsOwner]
+            permission_classes += [IsModerator | IsOwner]
         elif self.request.method == "POST":
-            permission_classes = [~IsModerator, IsOwner]
+            permission_classes += [~IsModerator, IsOwner]
 
         return [permission() for permission in permission_classes]
 
@@ -92,10 +93,10 @@ class LessonRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     @override
     def get_permissions(self):
-        permission_classes = []
+        permission_classes = [IsAuthenticated]
         if self.request.method == ["GET", "PUT", "PATCH"]:
-            permission_classes = [IsModerator | IsOwner]
+            permission_classes += [IsModerator | IsOwner]
         elif self.request.method == "DELETE":
-            permission_classes = [~IsModerator, IsOwner]
+            permission_classes += [~IsModerator, IsOwner]
 
         return [permission() for permission in permission_classes]
