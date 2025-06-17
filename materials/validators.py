@@ -3,7 +3,7 @@ from urllib.parse import urlparse
 from rest_framework.validators import ValidationError
 
 
-class AllowedURLValidator:
+class AllowedDomainValidator:
     """Validates if given URL contains youtube.com domain."""
 
     def __call__(self, value):
