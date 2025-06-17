@@ -1,7 +1,7 @@
 from typing import override
 
 from django.shortcuts import get_object_or_404
-from rest_framework import generics, status, viewsets
+from rest_framework import generics, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,20 +14,13 @@ from .models import Course, Lesson
 from .serializers import CourseSerializer, LessonSerializer
 
 
-class SubscriptionAPIView(APIView):
+class CourseSubscriptionAPIView(APIView):
     """Handles User Subscription to a Course."""
 
-    def post(self):
-        user = self.request.user
-        course_id = self.request.data.get("course_id")
+    def post(self, request, pk: int):
+        user = request.user
 
-        if not course_id:
-            return Response(
-                {"error": "course_id: field is required"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        course = get_object_or_404(Course, id=course_id)
+        course = get_object_or_404(Course, pk=pk)
         subscription = Subscription.objects.filter(user=user, course=course)
 
         if subscription.exists():
