@@ -151,6 +151,30 @@ class CourseViewSetTests(APITestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+    # SUBSCRIPTION
+    def test_course_subscription_endpoint(self):
+        self.authenticate(self.owner)
+        url = reverse("materials:course-subscription", args=[self.course_owned.id])
+
+        # subscribe
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.course_owned.refresh_from_db()
+        self.assertTrue(self.course_owned.subscriptions.exists())
+
+        # unsubscribe back
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.course_owned.refresh_from_db()
+        self.assertFalse(self.course_owned.subscriptions.exists())
+
+    def test_course_subscription_endpoint_as_unauthenticated(self):
+        url = reverse("materials:course-subscription", args=[self.course_owned.id])
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.course_owned.refresh_from_db()
+        self.assertFalse(self.course_owned.subscriptions.exists())
+
 
 class LessonViewSetTests(APITestCase):
     def setUp(self):
