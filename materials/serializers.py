@@ -11,6 +11,15 @@ class LessonSerializer(serializers.ModelSerializer):
         model = Lesson
         fields = ["id", "title", "description", "preview", "video_url", "course"]
 
+    def validate_course(self, course):
+        """Validates, if current course belongs to user."""
+        user = self.context["request"].user
+
+        if course.owner != user:
+            raise serializers.ValidationError("You don't own this course")
+
+        return course
+
 
 class CourseSerializer(serializers.ModelSerializer):
     lessons = LessonSerializer(many=True, read_only=True)
