@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -32,7 +33,9 @@ class Payment(models.Model):
         CASH = "cash", "Cash"
         TRANSFER = "transfer", "Transfer"
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="payments")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="payments"
+    )
     timestamp = models.DateTimeField(auto_now_add=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=True, null=True)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, blank=True, null=True)
@@ -44,3 +47,22 @@ class Payment(models.Model):
 
     def __str__(self) -> str:
         return f"{self.user} - {self.amount} rub. ({self.method})"
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="subscriptions"
+    )
+    course = models.ForeignKey(
+        Course, on_delete=models.CASCADE, related_name="subscriptions"
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "course"], name="unique_course_per_user"
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"Subscription: {self.user} - {self.course}"
