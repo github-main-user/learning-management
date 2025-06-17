@@ -210,7 +210,7 @@ class LessonViewSetTests(APITestCase):
         self.assertIsNone(response.data.get("results"))
 
     # CREATE
-    def test_create_lesson_as_owner(self):
+    def test_create_lesson_with_own_course(self):
         self.authenticate(self.owner)
         response = self.client.post(
             self.list_url,
@@ -222,6 +222,19 @@ class LessonViewSetTests(APITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Lesson.objects.last().owner, self.owner)
+
+    def test_create_lesson_with_foreign_course(self):
+        self.authenticate(self.owner)
+        response = self.client.post(
+            self.list_url,
+            {
+                "title": "Test Title",
+                "video_url": "https://youtube.com",
+                "course": self.course_other.id,
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertNotEqual(Lesson.objects.last().owner, self.owner)
 
     def test_create_lesson_as_moderator(self):
         self.authenticate(self.moderator)
