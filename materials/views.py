@@ -65,7 +65,9 @@ class CourseViewAPISet(viewsets.ModelViewSet):
     @override
     def get_permissions(self):
         permission_classes = [IsAuthenticated]
-        if self.action in ["create", "destroy"]:
+        if self.action == "create":
+            permission_classes += [~IsModerator]
+        elif self.action == "destroy":
             permission_classes += [~IsModerator, IsOwner]
         elif self.action in ["retrieve", "update", "partial_update", "list"]:
             permission_classes += [IsModerator | IsOwner]
@@ -104,7 +106,7 @@ class LessonListCreateAPIView(generics.ListCreateAPIView):
         if self.request.method == "GET":
             permission_classes += [IsModerator | IsOwner]
         elif self.request.method == "POST":
-            permission_classes += [~IsModerator, IsOwner]
+            permission_classes += [~IsModerator]
 
         return [permission() for permission in permission_classes]
 
