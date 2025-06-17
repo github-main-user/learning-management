@@ -14,7 +14,7 @@ from .serializers import CourseSerializer, LessonSerializer
 
 
 class SubscriptionAPIView(APIView):
-    """Handles User Subscription to Course Model."""
+    """Handles User Subscription to a Course."""
 
     def post(self):
         user = self.request.user
