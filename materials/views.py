@@ -1,12 +1,42 @@
 from typing import override
 
-from rest_framework import generics, viewsets
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, status, viewsets
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
+from users.models import Subscription
 from users.permissions import IsModerator, IsOwner
 
 from .models import Course, Lesson
 from .serializers import CourseSerializer, LessonSerializer
+
+
+class SubscriptionAPIView(APIView):
+    """Handles User Subscription to Course Model."""
+
+    def post(self):
+        user = self.request.user
+        course_id = self.request.data.get("course_id")
+
+        if not course_id:
+            return Response(
+                {"error": "course_id: field is required"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        course = get_object_or_404(Course, id=course_id)
+        subscription = Subscription.objects.filter(user=user, course=course)
+
+        if subscription.exists():
+            subscription.delete()
+            message = "User unsubscribed"
+        else:
+            Subscription.objects.create(user=user, course=course)
+            message = "User successfully subscribed"
+
+        return Response({"message": message})
 
 
 class CourseViewAPISet(viewsets.ModelViewSet):
