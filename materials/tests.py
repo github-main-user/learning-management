@@ -10,7 +10,7 @@ User = get_user_model()
 from .models import Course, Lesson
 
 
-class CourseViewSetTests(APITestCase):
+class CourseViewsTests(APITestCase):
     def setUp(self):
         # groups
         self.moderators_group = Group.objects.create(name="moderators")
@@ -176,7 +176,7 @@ class CourseViewSetTests(APITestCase):
         self.assertFalse(self.course_owned.subscriptions.exists())
 
 
-class LessonViewSetTests(APITestCase):
+class LessonViewsTests(APITestCase):
     def setUp(self):
         # groups
         self.moderators_group = Group.objects.create(name="moderators")
