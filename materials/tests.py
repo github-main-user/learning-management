@@ -125,7 +125,7 @@ class CourseViewSetTests(APITestCase):
         response = self.client.patch(url, {"title": "UPDATED"})
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.course_owned.refresh_from_db()
-        self.assertEqual(self.course_owned.title, "Owned Course")
+        self.assertEqual(self.course_owned.title, "Owner Course")
 
     # DESTROY
     def test_destroy_course_as_owner(self):
@@ -324,7 +324,7 @@ class LessonViewSetTests(APITestCase):
         response = self.client.patch(url, {"title": "UPDATED"})
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.lesson_owned.refresh_from_db()
-        self.assertEqual(self.lesson_owned.title, "Owned Lesson")
+        self.assertEqual(self.lesson_owned.title, "Owner Lesson")
 
     # DESTROY
     def test_destroy_lesson_as_owner(self):
