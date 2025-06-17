@@ -129,7 +129,7 @@ class LessonRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     @override
     def get_permissions(self):
         permission_classes = [IsAuthenticated]
-        if self.request.method == ["GET", "PUT", "PATCH"]:
+        if self.request.method in ["GET", "PUT", "PATCH"]:
             permission_classes += [IsModerator | IsOwner]
         elif self.request.method == "DELETE":
             permission_classes += [~IsModerator, IsOwner]
