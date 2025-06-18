@@ -9,7 +9,7 @@ from .models import Payment
 
 class PaymentListAPIView(generics.ListAPIView):
     """
-    Create/List Endpoint for Payment.
+    List Endpoint for Payment.
     Allows ordering by "timestamp" and filtering by "course", "lesson" and "method".
     """
 
