@@ -47,22 +47,3 @@ class Payment(models.Model):
 
     def __str__(self) -> str:
         return f"{self.user} - {self.amount} rub. ({self.method})"
-
-
-class Subscription(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="subscriptions"
-    )
-    course = models.ForeignKey(
-        Course, on_delete=models.CASCADE, related_name="subscriptions"
-    )
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=["user", "course"], name="unique_course_per_user"
-            )
-        ]
-
-    def __str__(self) -> str:
-        return f"Subscription: {self.user} - {self.course}"

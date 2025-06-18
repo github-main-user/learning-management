@@ -7,10 +7,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from materials.paginators import MaterialsPaginator
-from users.models import Subscription
 from users.permissions import IsModerator, IsOwner
 
-from .models import Course, Lesson
+from .models import Course, Lesson, Subscription
 from .serializers import CourseSerializer, LessonSerializer
 
 
