@@ -1,21 +1,12 @@
 from typing import override
 
 from django.contrib.auth import get_user_model
-from rest_framework.serializers import ModelSerializer
-
-from .models import Payment
+from rest_framework import serializers
 
 User = get_user_model()
 
 
-class PaymentSerializer(ModelSerializer):
-    class Meta:
-        model = Payment
-        fields = ["id", "user", "timestamp", "course", "lesson", "amount", "method"]
-        read_only_fields = ["timestamp"]
-
-
-class UserCreateSerializer(ModelSerializer):
+class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "email", "password"]
@@ -26,7 +17,7 @@ class UserCreateSerializer(ModelSerializer):
         return User.objects.create_user(**validated_data)
 
 
-class UserPrivateSerializer(ModelSerializer):
+class UserPrivateSerializer(serializers.ModelSerializer):
     payments = PaymentSerializer(many=True, read_only=True)
 
     class Meta:
@@ -43,7 +34,7 @@ class UserPrivateSerializer(ModelSerializer):
         ]
 
 
-class UserPublicSerializer(ModelSerializer):
+class UserPublicSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "email", "first_name", "phone", "city", "avatar"]
