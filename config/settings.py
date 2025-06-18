@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "django_filters",
     "rest_framework",
     "rest_framework_simplejwt",
+    "drf_spectacular",
     "users",
     "materials",
 ]
@@ -113,6 +114,13 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Learning Management System",
+    "DESCRIPTION": "A simple LMS project powered by django-rest-framework",
+    "VERSION": "1.0.0",
 }
 
 SIMPLE_JWT = {
