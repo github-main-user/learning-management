@@ -7,7 +7,7 @@ from payments.serializers import PaymentSerializer
 from .models import Payment
 
 
-class PaymentListCreateAPIView(generics.ListCreateAPIView):
+class PaymentListAPIView(generics.ListAPIView):
     """
     Create/List Endpoint for Payment.
     Allows ordering by "timestamp" and filtering by "course", "lesson" and "method".
@@ -19,10 +19,3 @@ class PaymentListCreateAPIView(generics.ListCreateAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     ordering_fields = ["timestamp"]
     filterset_fields = ["course", "lesson", "method"]
-
-
-class PaymentRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    """Retrieve/Update/Destroy Endpoint for Payment."""
-
-    queryset = Payment.objects.all()
-    serializer_class = PaymentSerializer
