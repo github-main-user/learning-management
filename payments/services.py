@@ -10,7 +10,7 @@ def create_stripe_product(name: str, description: str) -> str:
     return product.id
 
 
-def create_stripe_price(product_id: int, amount: float) -> str:
+def create_stripe_price(product_id: str, amount: float) -> str:
     """Creates a price for a given product."""
     price = stripe.Price.create(
         product=product_id, unit_amount=amount * 100, currency="usd"
@@ -18,9 +18,7 @@ def create_stripe_price(product_id: int, amount: float) -> str:
     return price.id
 
 
-def create_stripe_checkout_session(
-    price_id: str, success_url: str, cancel_url: str
-) -> str | None:
+def create_stripe_checkout_session(price_id: str, success_url: str, cancel_url: str):
     """Creates a stripe checkout session."""
     session = stripe.checkout.Session.create(
         payment_method_types=["card"],
@@ -29,4 +27,4 @@ def create_stripe_checkout_session(
         success_url=success_url,
         cancel_url=cancel_url,
     )
-    return session.url
+    return session
