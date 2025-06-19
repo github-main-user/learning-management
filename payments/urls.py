@@ -8,5 +8,5 @@ app_name = PaymentsConfig.name
 
 urlpatterns = [
     path("", PaymentListAPIView.as_view(), name="payment-list"),
-    path("", PaymentCreateAPIView.as_view(), name="payment-create"),
+    path("create/", PaymentCreateAPIView.as_view(), name="payment-create"),
 ]
