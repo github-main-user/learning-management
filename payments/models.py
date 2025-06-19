@@ -19,11 +19,11 @@ class Payment(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     method = models.CharField(max_length=8, choices=PaymentMethod)
     stripe_session_id = models.CharField(max_length=255, blank=True, null=True)
-    payment_url = models.URLField(blank=True, null=True)
+    payment_url = models.URLField(max_length=1000, blank=True, null=True)
     is_paid = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["timestamp"]
 
     def __str__(self) -> str:
-        return f"{self.user} - {self.amount} rub. ({self.method})"
+        return f"{self.user} - {self.amount} usd. ({self.method})"
