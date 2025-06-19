@@ -13,6 +13,7 @@ from .services import (
     create_stripe_checkout_session,
     create_stripe_price,
     create_stripe_product,
+    fetch_stripe_session,
 )
 
 
@@ -70,3 +71,20 @@ class PaymentCreateAPIView(generics.CreateAPIView):
             stripe_session_id=session.id,
             payment_url=session.url,
         )
+
+
+class PaymentStatusAPIView(generics.RetrieveAPIView):
+    """Fetches, updates status and returns stripe payment by a given session id."""
+
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+    lookup_field = "stripe_session_id"
+
+    @override
+    def get(self, request, stripe_session_id: str):
+        payment = self.get_object()
+        session = fetch_stripe_session(payment.stripe_session_id)
+        if session.payment_status == "paid":
+            payment.is_paid = True
+            payment.save()
+        return super().get(request, stripe_session_id)
