@@ -8,3 +8,10 @@ class PaymentSerializer(serializers.ModelSerializer):
         model = Payment
         fields = ["id", "user", "timestamp", "course", "lesson", "amount", "method"]
         read_only_fields = ["timestamp"]
+
+
+class CoursePaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = ["course"]
+        write_only_fields = ["course"]
