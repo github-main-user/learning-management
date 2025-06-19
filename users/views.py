@@ -17,7 +17,6 @@ User = get_user_model()
 class UserCreateAPIView(generics.CreateAPIView):
     """Endpoint for user registration. Allows requests from unauthenticated users."""
 
-    queryset = User.objects.all()
     serializer_class = UserCreateSerializer
     permission_classes = [AllowAny]
 
