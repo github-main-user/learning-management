@@ -3,6 +3,8 @@ from typing import override
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from payments.serializers import PaymentSerializer
+
 User = get_user_model()
 
 
