@@ -9,6 +9,7 @@ class Course(models.Model):
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="courses"
     )
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self) -> str:
         return self.title
