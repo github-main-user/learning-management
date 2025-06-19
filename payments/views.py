@@ -83,7 +83,17 @@ class PaymentStatusAPIView(generics.RetrieveAPIView):
     @override
     def get(self, request, stripe_session_id: str):
         payment = self.get_object()
-        session = fetch_stripe_session(payment.stripe_session_id)
+        try:
+            session = fetch_stripe_session(payment.stripe_session_id)
+        except stripe.StripeError as e:
+            print(
+                f"Failed to retrieve a stripe checkout session {stripe_session_id}: {e}"
+            )
+            raise APIException(
+                code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="An error occured during stripe session retrieving",
+            )
+
         if session.payment_status == "paid":
             payment.is_paid = True
             payment.save()
