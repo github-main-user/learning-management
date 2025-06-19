@@ -10,11 +10,9 @@ def create_stripe_product(name: str, description: str) -> str:
     return product.id
 
 
-def create_stripe_price(product_id: str, amount: float) -> str:
-    """Creates a price for a given product."""
-    price = stripe.Price.create(
-        product=product_id, unit_amount=amount * 100, currency="usd"
-    )
+def create_stripe_price(product_id: str, amount: int) -> str:
+    """Creates a price for a given product. Amount should be in penny."""
+    price = stripe.Price.create(product=product_id, unit_amount=amount, currency="usd")
     return price.id
 
 
