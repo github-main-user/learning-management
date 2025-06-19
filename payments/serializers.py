@@ -6,12 +6,16 @@ from .models import Payment
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
-        fields = ["id", "user", "timestamp", "course", "lesson", "amount", "method"]
-        read_only_fields = ["timestamp"]
-
-
-class CoursePaymentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Payment
-        fields = ["course"]
-        write_only_fields = ["course"]
+        fields = [
+            "id",
+            "user",
+            "timestamp",
+            "course",
+            "lesson",
+            "amount",
+            "method",
+            "stripe_session_id",
+            "payment_url",
+            "is_paid",
+        ]
+        read_only_fields = [f for f in fields if f != "course"]
