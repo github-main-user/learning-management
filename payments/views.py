@@ -6,9 +6,8 @@ from rest_framework import generics, status
 from rest_framework.exceptions import APIException
 from rest_framework.filters import OrderingFilter
 
-from payments.serializers import PaymentSerializer
-
 from .models import Payment
+from .serializers import PaymentSerializer
 from .services import (
     create_stripe_checkout_session,
     create_stripe_price,
