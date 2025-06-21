@@ -160,3 +160,10 @@ CELERY_TIMEZONE = "Europe/Moscow"
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_ACCEPT_CONTENT = ["json"]
+
+CELERY_BEAT_SCHEDULE = {
+    "check_and_block_inactive_users": {
+        "task": "materials.tasks.block_inactive_users",
+        "schedule": timedelta(days=1),
+    },
+}
