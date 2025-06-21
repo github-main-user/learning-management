@@ -76,7 +76,7 @@ class CourseViewAPISet(viewsets.ModelViewSet):
     @override
     def perform_update(self, serializer):
         serializer.save()
-        course = serializer
+        course = serializer.instance
 
         if (timezone.now() - course.updated_at) > timedelta(hours=4):
             notify_about_course_update.delay(course.id)
@@ -142,7 +142,7 @@ class LessonRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     @override
     def perform_update(self, serializer):
         serializer.save()
-        course = serializer.course
+        course = serializer.instance.course
 
         if (timezone.now() - course.updated_at) > timedelta(hours=4):
             notify_about_course_update.delay(course.id)
