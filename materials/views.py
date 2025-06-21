@@ -1,6 +1,8 @@
+from datetime import timedelta
 from typing import override
 
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from rest_framework import generics, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -11,6 +13,7 @@ from users.permissions import IsModerator, IsOwner
 
 from .models import Course, Lesson, Subscription
 from .serializers import CourseSerializer, LessonSerializer
+from .tasks import notify_about_course_update
 
 
 class CourseSubscriptionAPIView(APIView):
@@ -70,6 +73,14 @@ class CourseViewAPISet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+    @override
+    def perform_update(self, serializer):
+        serializer.save()
+        course = serializer
+
+        if (timezone.now() - course.updated_at) > timedelta(hours=4):
+            notify_about_course_update.delay(course.id)
+
 
 class LessonListCreateAPIView(generics.ListCreateAPIView):
     """
@@ -127,3 +138,11 @@ class LessonRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
             permission_classes += [~IsModerator, IsOwner]
 
         return [permission() for permission in permission_classes]
+
+    @override
+    def perform_update(self, serializer):
+        serializer.save()
+        course = serializer.course
+
+        if (timezone.now() - course.updated_at) > timedelta(hours=4):
+            notify_about_course_update.delay(course.id)
