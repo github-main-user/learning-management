@@ -59,17 +59,23 @@ class CourseViewsTests(APITestCase):
     # CREATE
     def test_create_course_as_owner(self):
         self.authenticate(self.owner)
-        response = self.client.post(self.list_url, {"title": "Test Title"})
+        response = self.client.post(
+            self.list_url, {"title": "Test Title", "price": "12.56"}
+        )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Course.objects.last().owner, self.owner)
 
     def test_create_course_as_moderator(self):
         self.authenticate(self.moderator)
-        response = self.client.post(self.list_url, {"title": "Test Title"})
+        response = self.client.post(
+            self.list_url, {"title": "Test Title", "price": "12.56"}
+        )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_create_course_as_unauthenticated(self):
-        response = self.client.post(self.list_url, {"title": "Test Title"})
+        response = self.client.post(
+            self.list_url, {"title": "Test Title", "price": "12.56"}
+        )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     # RETRIEVE
