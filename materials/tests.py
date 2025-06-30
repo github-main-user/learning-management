@@ -26,10 +26,10 @@ class CourseViewsTests(APITestCase):
 
         # courses
         self.course_owned = Course.objects.create(
-            title="Owner Course", owner=self.owner
+            title="Owner Course", owner=self.owner, price=10.5
         )
         self.course_other = Course.objects.create(
-            title="Other Course", owner=self.other_user
+            title="Other Course", owner=self.other_user, price=25.3
         )
 
         self.list_url = reverse("materials:course-list")
@@ -192,7 +192,7 @@ class LessonViewsTests(APITestCase):
 
         # courses and lessons
         self.course_owned = Course.objects.create(
-            title="Owner Course", owner=self.owner
+            title="Owner Course", owner=self.owner, price=12.3
         )
         self.lesson_owned = Lesson.objects.create(
             title="Owner Lesson",
@@ -202,7 +202,7 @@ class LessonViewsTests(APITestCase):
         )
 
         self.course_other = Course.objects.create(
-            title="Other Course", owner=self.other_user
+            title="Other Course", owner=self.other_user, price=32.5
         )
         self.lesson_other = Lesson.objects.create(
             title="Other Lesson", owner=self.other_user, course=self.course_other
