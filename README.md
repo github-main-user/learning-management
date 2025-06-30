@@ -12,8 +12,10 @@ It implements auth using JWT system and uses stripe for payments
 - Python 3.13+
 - Celery(redis) + Celery beat
 - Docker & Docker compose
+- API Documentation via Swagger/Redoc
 
 # Quick Start
+In case you want to try the project on your machine:
 
 1. Clone the repo
 ```bash
@@ -42,3 +44,28 @@ docker compose up --build
 
 - The application will be available on `http://localhost:8000/`
 - Admin Panel on `http://localhost:8000/admin/`
+
+# Github Actions
+In case you want to use automatic CICD via github actions:
+
+1. Set up your server:
+    - Install Docker
+    - Set up firewall for 22(ssh) and 80(http) ports *(recommended but optional)*
+    - Create a non-root user *(recommended but optional)*
+2. Fork this repo
+3. Setup github secrets:
+    - `ENV_FILE` - file with all important variables *(see `.env.example` file)*.
+    - `SERVER_IP` - IP address of your server.
+    - `SSH_USER` - user name.
+    - `SSH_SECRET_KEY` - *public* secret ssh key.
+
+Every push/PR will trigger these github actions:
+1. lint (flake8)
+2. test
+3. deploy
+
+- The application will be available on `http://<SERVER_IP>:80/`
+- Go to `api/docs` and `api/redoc` for documentation
+
+To stop started application - `cd` to `/home/<SSH_USER>/learning-management/`,
+and run `docker compose down` (add `-v` if you want to clear all volumes).
