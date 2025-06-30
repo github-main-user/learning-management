@@ -15,12 +15,12 @@ class CourseViewsTests(APITestCase):
         self.moderators_group = Group.objects.create(name="moderators")
 
         # users
-        self.owner = User.objects.create_user(email="owner@owner.com", password="pass")  # type: ignore
-        self.moderator = User.objects.create_user(  # type: ignore
+        self.owner = User.objects.create_user(email="owner@owner.com", password="pass")
+        self.moderator = User.objects.create_user(
             email="moder@model.com", password="pass"
         )
         self.moderator.groups.add(self.moderators_group)
-        self.other_user = User.objects.create_user(  # type: ignore
+        self.other_user = User.objects.create_user(
             email="other@other.com", password="pass"
         )
 
@@ -181,12 +181,12 @@ class LessonViewsTests(APITestCase):
         self.moderators_group = Group.objects.create(name="moderators")
 
         # users
-        self.owner = User.objects.create_user(email="owner@owner.com", password="pass")  # type: ignore
-        self.moderator = User.objects.create_user(  # type: ignore
+        self.owner = User.objects.create_user(email="owner@owner.com", password="pass")
+        self.moderator = User.objects.create_user(
             email="moder@model.com", password="pass"
         )
         self.moderator.groups.add(self.moderators_group)
-        self.other_user = User.objects.create_user(  # type: ignore
+        self.other_user = User.objects.create_user(
             email="other@other.com", password="pass"
         )
 
