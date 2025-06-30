@@ -39,7 +39,7 @@ jobs:
       run: echo '${{ secrets.ENV_FILE }}' > .env
 
     - name: Run tests
-      run: docker compose run --rm web python manage.py test users --failfast
+      run: docker compose run --rm web python manage.py test --failfast
 
 
   deploy:
