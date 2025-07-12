@@ -51,7 +51,7 @@ class PaymentCreateAPIView(generics.CreateAPIView):
             success_url = self.request.build_absolute_uri(
                 f"/payment/success/{user.pk}/"
             )
-            cancel_url = self.request.build_absolute_uri(f"/payment/cancel/")
+            cancel_url = self.request.build_absolute_uri("/payment/cancel/")
             session = create_stripe_checkout_session(price_id, success_url, cancel_url)
         except stripe.StripeError as e:
             print(f"Failed to create a stripe checkout session: {e}")

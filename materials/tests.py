@@ -15,21 +15,21 @@ class CourseViewsTests(APITestCase):
         self.moderators_group = Group.objects.create(name="moderators")
 
         # users
-        self.owner = User.objects.create_user(email="owner@owner.com", password="pass")  # type: ignore
-        self.moderator = User.objects.create_user(  # type: ignore
+        self.owner = User.objects.create_user(email="owner@owner.com", password="pass")
+        self.moderator = User.objects.create_user(
             email="moder@model.com", password="pass"
         )
         self.moderator.groups.add(self.moderators_group)
-        self.other_user = User.objects.create_user(  # type: ignore
+        self.other_user = User.objects.create_user(
             email="other@other.com", password="pass"
         )
 
         # courses
         self.course_owned = Course.objects.create(
-            title="Owner Course", owner=self.owner
+            title="Owner Course", owner=self.owner, price=10.5
         )
         self.course_other = Course.objects.create(
-            title="Other Course", owner=self.other_user
+            title="Other Course", owner=self.other_user, price=25.3
         )
 
         self.list_url = reverse("materials:course-list")
@@ -59,17 +59,23 @@ class CourseViewsTests(APITestCase):
     # CREATE
     def test_create_course_as_owner(self):
         self.authenticate(self.owner)
-        response = self.client.post(self.list_url, {"title": "Test Title"})
+        response = self.client.post(
+            self.list_url, {"title": "Test Title", "price": "12.56"}
+        )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Course.objects.last().owner, self.owner)
 
     def test_create_course_as_moderator(self):
         self.authenticate(self.moderator)
-        response = self.client.post(self.list_url, {"title": "Test Title"})
+        response = self.client.post(
+            self.list_url, {"title": "Test Title", "price": "12.56"}
+        )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_create_course_as_unauthenticated(self):
-        response = self.client.post(self.list_url, {"title": "Test Title"})
+        response = self.client.post(
+            self.list_url, {"title": "Test Title", "price": "12.56"}
+        )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     # RETRIEVE
@@ -181,18 +187,18 @@ class LessonViewsTests(APITestCase):
         self.moderators_group = Group.objects.create(name="moderators")
 
         # users
-        self.owner = User.objects.create_user(email="owner@owner.com", password="pass")  # type: ignore
-        self.moderator = User.objects.create_user(  # type: ignore
+        self.owner = User.objects.create_user(email="owner@owner.com", password="pass")
+        self.moderator = User.objects.create_user(
             email="moder@model.com", password="pass"
         )
         self.moderator.groups.add(self.moderators_group)
-        self.other_user = User.objects.create_user(  # type: ignore
+        self.other_user = User.objects.create_user(
             email="other@other.com", password="pass"
         )
 
         # courses and lessons
         self.course_owned = Course.objects.create(
-            title="Owner Course", owner=self.owner
+            title="Owner Course", owner=self.owner, price=12.3
         )
         self.lesson_owned = Lesson.objects.create(
             title="Owner Lesson",
@@ -202,7 +208,7 @@ class LessonViewsTests(APITestCase):
         )
 
         self.course_other = Course.objects.create(
-            title="Other Course", owner=self.other_user
+            title="Other Course", owner=self.other_user, price=32.5
         )
         self.lesson_other = Lesson.objects.create(
             title="Other Lesson", owner=self.other_user, course=self.course_other

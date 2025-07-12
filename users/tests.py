@@ -8,7 +8,7 @@ User = get_user_model()
 
 class TokenViewsTests(APITestCase):
     def setUp(self):
-        self.user = User.objects.create_user(email="test@test.com", password="pass")  # type: ignore
+        self.user = User.objects.create_user(email="test@test.com", password="pass")
         self.obtain_url = reverse("users:token_obtain_pair")
         self.refresh_url = reverse("users:token_refresh")
 
@@ -50,13 +50,13 @@ class TokenViewsTests(APITestCase):
 
 class UserViewsTests(APITestCase):
     def setUp(self) -> None:
-        self.main_user = User.objects.create_user(  # type: ignore
+        self.main_user = User.objects.create_user(
             email="main@main.com",
             first_name="Firstname",
             last_name="Lastname",
             password="pass",
         )
-        self.other_user = User.objects.create_user(  # type: ignore
+        self.other_user = User.objects.create_user(
             email="other@other.com",
             password="pass",
         )
